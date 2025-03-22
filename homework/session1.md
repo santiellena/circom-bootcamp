@@ -15,3 +15,197 @@
 On the other hand, if we had been given `S = {1, 2, 3, 4, 5}` and the subsets `{1}, {1, 2}, {3, 4}, {1, 4, 5}` and asked can it be covered with `k = 2` subsets, then there would be no solution. However, if `k = 3` then a valid solution would be `{1, 2}, {3, 4}, {1, 4, 5}`.
 
 Our goal is to prove for a given set `S` and a defined list of subsets of `S`, if we can pick a set of subsets such that their union is `S`. Specifically, the question is if we can do it with `k` or fewer subsets. We wish to prove we know which `k` (or fewer) subsets to use by encoding the problem as an arithmetic circuit.
+
+### Solutions
+
+1.  
+```javascript
+// x is in the range 0-31 (2^4 - 1)
+x === b0 + 2b1 + 4b2 + 8b3 + 16b4
+
+// ensure bn are binary
+b0(b0 - 1) === 0
+b1(b1 - 1) === 0
+b2(b2 - 1) === 0
+b3(b3 - 1) === 0
+b4(b4 - 1) === 0
+
+// as 17 and x are 4 bit numbers, I want to check that
+// 17 - x > 0 using the midpoint of a 5 bit representation which is 2^(5-1)
+2^4 - (16 - x) === a0 + 2a1 + 4a2 + 8a3 + 16a4 + 32a5
+
+a0(a0 - 1) === 0
+a1(a1 - 1) === 0
+a2(a2 - 1) === 0
+a3(a3 - 1) === 0
+a4(a4 - 1) === 0
+
+a5 === 1
+```
+
+2. 
+```javascript
+x1(x1 - 1) === 0 
+x2(x2 - 1) === 0 
+//... 
+xn(xn - 1) === 0
+
+// ¬x1 v ¬x2 v ... v ¬xn
+1 === ((1 - x1) + (1 - x2) - (1 - x1)(1 - x2)) + (1 - x3) - ((1 - x1) + (1 - x2) - (1 - x1)(1 - x2)) (1 - x3) ... // and so on until xn
+```
+
+3. 
+```javascript
+// simpler way lol (unsure if this is possible in Circom)
+x1 === 1
+x2 === 1
+// ...
+xn === 1
+
+// or a more structured way
+x1(x1 - 1) === 0 
+x2(x2 - 1) === 0 
+//... 
+xn(xn - 1) === 0
+// x1 and x2 and ... and xn
+((x1)(x2)...(xn)) - 1 === 0
+```
+
+4. 
+Proposed VALID bipartite graph (5 nodes):
+
+```mermaid
+flowchart LR
+
+A@{ shape: circle, label: "A"};
+style A fill:#000,color:white;
+
+B@{ shape: circle, label: "B"};
+style B fill:#000,color:white;
+
+C@{ shape: circle, label: "C"};
+style C fill:#000,color:white;
+
+D@{ shape: circle, label: "D"};
+style D color:black,fill:#fff;
+
+E@{ shape: circle, label: "E"};
+style E color:black,fill:#fff;
+
+A-->D
+A-->E
+B-->D
+C-->E
+E-->B
+D-->C
+```
+   
+```javascript
+// Black = 1
+// White = 2
+
+// Enforce nodes are either black or white (1 or 2)
+0 === (a - 1)(a - 2)
+0 === (b - 1)(b - 2)
+0 === (c - 1)(c - 2)
+0 === (d - 1)(d - 2)
+0 === (e - 1)(e - 2)
+
+// node x node = 2 to exist a valid conection
+0 === (ad - 2)
+0 === (ae - 2)
+0 === (bd - 2)
+0 === (ce - 2)
+0 === (eb - 2)
+0 === (dc - 2)
+```
+
+5. 
+```javascript
+/*
+    I should check 
+    GTE(x, y)
+    GTE(y, z)
+    GTE(x, z),
+    and use the MSB of the GTE check 
+    as a boolean for a boolean circuit
+*/
+// Usign just 3 bits for the representation of x, y, z and k
+
+x === x0 + 2x1 + 4x2
+y === y0 + 2y1 + 4y2
+z === z0 + 2z1 + 4z2
+
+0 === x0(x0 + 1)
+0 === x1(x1 + 1)
+0 === x2(x2 + 1)
+
+0 === y0(y0 + 1)
+0 === y1(y1 + 1)
+0 === y2(y2 + 1)
+
+0 === z0(z0 + 1)
+0 === z1(z1 + 1)
+0 === z2(z2 + 1)
+
+// x >= y?
+2^3 + (x - y) === a0 + 2a1 + 4a2 + 8a3 // if a3 is 1, then x >= y
+0 === a0(a0 + 1)
+0 === a1(a1 + 1)
+0 === a2(a2 + 1)
+0 === a3(a3 + 1)
+
+// x >= z?
+2^3 + (x - z) === b0 + 2b1 + 4b2 + 8b3 // if b3 is 1, then x >= z
+0 === b0(b0 + 1)
+0 === b1(b1 + 1)
+0 === b2(b2 + 1)
+0 === b3(b3 + 1)
+
+// y >= z?
+2^3 + (y - z) === c0 + 2c1 + 4c2 + 8c3 // if c3 is 1, then y >= z
+0 === c0(c0 - 1) 
+0 === c1(c1 - 1) 
+0 === c2(c2 − 1)
+0 === c3(c3 − 1)
+
+// Now, we have a3, b3 and c3
+/*
+    I want an specific behavior for this 
+
+    a3  b3  c3  greater
+    0   0   0     z 
+    0   0   1     y
+    0   1   0     -
+    0   1   1     y
+    1   0   0     z
+    1   0   1     -
+    1   1   0     x
+    1   1   1     x
+
+    (when - is in greater, it means that that scenario is not logically possible)
+*/
+
+// Next, I will use those bits to construct "selectors"
+
+// (a3 and b3 and c3) or (a3 and b3 and ¬c3)
+// the OR operator creates this weird form where: x V y => x + y -xy
+// a more efficient selector would be just: a3 * b3, but I wanted it to be as verbose as possible
+selector_x === (a3 * b3 * c3) + (a3 * b3 * (1 - c3)) - (a3 * b3 * c3) * (a3 * b3 * (1 - c3))
+
+// from now on I will just simplify the selector's expressions by induction 
+
+// (¬a3 and ¬b3 and c3) or (¬a3 and b3 and c3)
+// simplifying...
+// ¬a3 * c3
+selector_y === (1 - a3) * c3
+
+// (¬a3 and ¬b3 and ¬c3) or (a3 and ¬b3 and ¬c3)
+// simplifying...
+// ¬b3 and ¬c3
+selector_z === (1 - b3) * (1 - c3)
+
+k === selector_x * x + selector_y * y + selector_z * z
+```
+
+Note for this previous resolution: It's the first thing that came to my mind after 5 minutes of thinking how to solve it, maybe is not the best way but it's what I could do with the tools I learned in the [ZK Book](https://www.rareskills.io/post/arithmetic-circuit). Please, if you found other way to solve it, open an issue or send a pool request to add yours! 
