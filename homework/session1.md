@@ -302,3 +302,5 @@ sel_10 === b2
 // If all are present in the selected subsets, the following constraint is true
 1 === sel_1 * sel_2 * sel_3 * sel_4 * sel_5 * sel_6 * sel_7 * sel_8 * sel_9 * sel_10
 ```
+
+Note: I'm unsure about my interpretation of the exercises, I guess it is because I tend to think as if I were programming the thing and not writing an arithmetic circuit.
