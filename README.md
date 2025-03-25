@@ -6,6 +6,9 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
     - [Introduction](#introduction)
     - [Arithmetic Circuits](#arithmetic-circuits)
     - [Homework S1](#homework-s1)
+- [Session 2](#session-2)
+   - [Modular Arithmetic](#modular-arithmetic)
+   - [Homework S2](#homework-s2)
 
 ## Session 1
 
@@ -78,3 +81,43 @@ In conclusion, as any NP problem can be represented as a Boolean Formula, and an
 ### Homework S1
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session1.md) file.
+
+## Session 2
+
+### Modular Arithmetic
+
+Given a `p` prime number we define a **finite field** with `p` elements `{0, 1, ..., p -1}`. The only allowed operations are addition and multiplication, modulo `p`.
+
+To perform operations and play around with modular arithmetic, I used the [Rust playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2024):
+```rust
+fn main() { // 10 = 3 mod 7
+    println!("{}", 10 % 7);
+}
+```
+
+When we do addition or multipication in a finite field, we might encounter **overflow**(the result is greater than `p`). This is typically considered a bad thing, but in modular arithmetic it's not a bug, it's a feature (lol). When an operation overflows, as it is done modulo `p`, we get the reminder of the division by `p` which is a number (better called "element") in the finite field.
+
+For example, `3 + 5 = 1 mod 7`:
+   - `3 + 5` is `8`, 
+   - but modulo `7`, `8 = 1`.
+
+In the previous example, we would say that `8` is **congruent** to `1`, not equal. This is just mathematical vocabulary, but I think it is good to know it because we will hear that word a lot working with finite fields.
+
+The same concept can be used with **underflow**. Altough our finite field does not have elements that represent negative numbers, we do have "congruent" elements from our finite field. 
+
+For example, in the Rust playground:
+```rust
+fn main() {
+   // -6 = 1 mod 7
+    println!("{}", -6 % 7 + 7);
+    // note: the "+ 7" after the mod operation is there because of how Rust rounds division
+    // in another programming language as Python that wouldn't be necessary.
+}
+```
+- `-6` is conguent to `1`, so we have a way to represent negative numbers!
+
+
+
+### Homework S2
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session2.md) file.
