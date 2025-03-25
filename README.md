@@ -151,7 +151,7 @@ Thus, `3` is congruent to `1/5` in the finite field when `p = 7`.
 A cool rule of multiplicative inverses is: `(p - 1) and (p + 1)` are their own multiplicative inverses.
  - `(p - 1)(p - 1) = 1 mod p`
  - `(p + 1)(p + 1) = 1 mod p`
- 
+
 Remember that you can use Rust or Python to check it for yourself if you don't beleive me hahaha.
 
 There is an explanation behind those curious behaviors, the easy way is to see that `(p - 1)` is congruent to `-1`, and `-1 * -1 = 1`. Same thing occurs with `(p + 1)`, it is congruent to `1`.
