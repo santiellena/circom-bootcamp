@@ -116,7 +116,46 @@ fn main() {
 ```
 - `-6` is conguent to `1`, so we have a way to represent negative numbers!
 
+**Addition entity:** Any element plus `p` is the same element. 
 
+**Additive inverse:**
+`a + b = 0` -> `b` is the additive inverse of `a`. 
+ - `0` is its own additive inverse.
+ - every number has exactly one additive inverse
+
+Here the "congruency" of negative numbers with elements of the finite field start to make sense.
+
+In normal math, finding the additive inverse of `a` is kind of easy, we just say `-a`, `a + (-a) = 0`. However, in modular arithmetic, we don't have a way to substract (because we just use addition or multiplication) or to directly represent a negative number.
+
+   - `5 - 5 mod 7` is NOT valid,
+   - however, `5 + 2 = 0 mod 7` is valid.
+
+Turns out that as `-5` is conguent to `2` they behave as the same element. Thus, `5 - 5 = 0` in normal math and `5 + 2 = 0` in the finite field where `p = 7`. Note that the congruency between numbers depends directly in the value assigned to `p`.
+
+**Multiplicative inverse:** 
+The multiplicative inverse for `a` is a number `b` such that `ab = 1`.
+ - `0` logically doesn't have a multiplicative inverse.
+ - every number has exactly one multiplicative inverse.
+
+Normally, we would say that the multiplicative inverse of `5` is `1/5` because `5 * 1/5 = 1`. However, we are doing modular arithmetic and fractions cannot be represented.
+
+Here the "congruency" between numbers outside of the field with elements of the fields also works, as with negative numbers.
+For each element in the field, there is another element in the field that is congruent to the multiplicative inverse of that number. Essentially, they behave as the same number.
+
+For example, the multiplicative inverse of `5 mod 7` is `3`.
+ - `5 * 3 = 1 mod 7`
+ - `15 = 1 mod 3`
+
+Thus, `3` is congruent to `1/5` in the finite field when `p = 7`.
+
+A cool rule of multiplicative inverses is: `(p - 1) and (p + 1)` are their own multiplicative inverses.
+ - `(p - 1)(p - 1) = 1 mod p`
+ - `(p + 1)(p + 1) = 1 mod p`
+Remember that you can use Rust or Python to check it for yourself if you don't beleive me hahaha.
+
+There is an explanation behind those curious behaviors, the easy way is to see that `(p - 1)` is congruent to `-1`, and `-1 * -1 = 1`. Same thing occurs with `(p + 1)`, it is congruent to `1`.
+
+There is a theorem for computing the multiplicative inverse of a number (Fermat's Little Theorem), however, it is easier to use some tool that does the calculation for us. I guess it is to avoid innecesary complexity, BUT I wouldn't say that it will hurt to learn it anyways.
 
 ### Homework S2
 
