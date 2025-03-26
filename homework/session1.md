@@ -16,7 +16,7 @@ On the other hand, if we had been given `S = {1, 2, 3, 4, 5}` and the subsets `{
 
 Our goal is to prove for a given set `S` and a defined list of subsets of `S`, if we can pick a set of subsets such that their union is `S`. Specifically, the question is if we can do it with `k` or fewer subsets. We wish to prove we know which `k` (or fewer) subsets to use by encoding the problem as an arithmetic circuit.
 
-### Solutions
+### Solutions:
 
 1.  
 ```javascript
