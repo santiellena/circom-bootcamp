@@ -22,7 +22,7 @@ Solution:
 \\
 \end{align*}
 \\
-\bbox[yellow]{\begin{bmatrix}
+\textcolor{yellow}{\begin{bmatrix}
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
@@ -40,7 +40,7 @@ a \\
 b \\
 c \\
 \end{bmatrix} = 
-\bbox[green]{\begin{bmatrix}
+\textcolor{green}{\begin{bmatrix}
 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
@@ -58,7 +58,7 @@ a \\
 b \\
 c \\
 \end{bmatrix} \circ 
-\bbox[purple]{\begin{bmatrix}
+\textcolor{purple}{\begin{bmatrix}
 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
