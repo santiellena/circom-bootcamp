@@ -9,6 +9,9 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 2](#session-2)
    - [Modular Arithmetic](#modular-arithmetic)
    - [Homework S2](#homework-s2)
+- [Session 3](#session-3)
+   - [Rank-1-Constraints-System](#rank-1-constraints-system)
+   - [Homework S3](#homework-s3)
 
 ## Session 1
 
@@ -161,3 +164,15 @@ There is a theorem for computing the multiplicative inverse of a number (Fermat'
 ### Homework S2
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session2.md) file.
+
+## Session 3
+
+### Rank-1-Constraints-System
+
+In this session, it was covered how artimetic circuits are converted into R1CS. This is the last session where we review foundational Circom topics. 
+
+I already have my own personal explanation on how the conversion from algebraic circuits in [this](https://github.com/santiellena/zk-magic-square?tab=readme-ov-file#arithmetic-circuit-to-r1sc) repository, with easy examples and some good theory background. I won't repeat myself here, you can go and check this topic there.
+
+### Homework S3
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session3.md) file.
