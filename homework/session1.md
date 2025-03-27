@@ -1,24 +1,6 @@
 # Homework
 
-### Exercises:
-
 1. Create an arithmetic circuit to prove that `x < 17` 
-2. Create an arithmetic circuit that takes signals `x₁, x₂, …, xₙ` and is satisfied if at least one signal is 0.
-3. Create an arithmetic circuit that takes signals `x₁, x₂, …, xₙ` and is satsified if all signals are 1.
-4. A bipartite graph is a graph that can be colored with two colors such that no two neighboring nodes share the same color. Devise an arithmetic circuit scheme to show you have a valid witness of a 2-coloring of a graph. Hint: the scheme in this tutorial needs to be adjusted before it will work with a 2-coloring.
-5. Create an arithmetic circuit that constrains `k` to be the maximum of `x`, `y`, or `z`. That is, `k` should be equal to `x` if `x` is the maximum value, and same for `y` and `z`.
-6. Create an arithmetic circuit that takes signals `x₁, x₂, …, xₙ`, constrains them to be binary, and outputs 1 if at least one of the signals is 1. Hint: this is tricker than it looks. Consider combining what you learned in the first two problems and using the NOT gate.
-7. Create an arithmetic circuit to determine if a signal `v` is a power of two (1, 2, 4, 8, etc). Hint: create an arithmetic circuit that constrains another set of signals to encode the binary representation of `v`, then place additional restrictions on those signals.
-8. Create an arithmetic circuit that models the Subset sum problem. Given a set of integers (assume they are all non-negative), determine if there is a subset that sums to a given value `k`. For example, given the set `{3, 5, 17, 21}` and `k = 22` there is a subset `{5, 17}` that sums to `22`. Of course, a subset sum problem does not necessarily have a solution.
-9. (optional) The covering set problem starts with a set `S={1, 2, ..., 10}` and several well-defined subsets of `S`, for example `{1, 2, 3}, {3, 5, 7, 9}, {8, 10}, {5, 6, 7, 8}, {2, 4, 6, 8}`, and asks if we can take at most `k` subsets of `S` such that their union is `S`. n the example problem above, the answer for `k = 4`, is true because we can use `{1, 2, 3}, {3, 5, 7, 9}, {8, 10}, {2, 4, 6, 8}`. Note that for each problems, the subsets we can work with are determined at the beginning. We cannot construct the subsets ourselves. If we had been given the subsets `{1, 2, 3}, {4, 5}, {7, 8, 9, 10}` then there would be no solution because the number `6` is not in the subsets.
-
-On the other hand, if we had been given `S = {1, 2, 3, 4, 5}` and the subsets `{1}, {1, 2}, {3, 4}, {1, 4, 5}` and asked can it be covered with `k = 2` subsets, then there would be no solution. However, if `k = 3` then a valid solution would be `{1, 2}, {3, 4}, {1, 4, 5}`.
-
-Our goal is to prove for a given set `S` and a defined list of subsets of `S`, if we can pick a set of subsets such that their union is `S`. Specifically, the question is if we can do it with `k` or fewer subsets. We wish to prove we know which `k` (or fewer) subsets to use by encoding the problem as an arithmetic circuit.
-
-### Solutions:
-
-1.  
 ```javascript
 // x is in the range 0-31 (2^4 - 1)
 x === b0 + 2b1 + 4b2 + 8b3 + 16b4
@@ -43,7 +25,7 @@ a4(a4 - 1) === 0
 a5 === 1
 ```
 
-2. 
+2. Create an arithmetic circuit that takes signals `x₁, x₂, …, xₙ` and is satisfied if at least one signal is 0.
 ```javascript
 x1(x1 - 1) === 0 
 x2(x2 - 1) === 0 
@@ -57,7 +39,7 @@ xn(xn - 1) === 0
 0 === x1x2x3...xn
 ```
 
-3. 
+3. Create an arithmetic circuit that takes signals `x₁, x₂, …, xₙ` and is satsified if all signals are 1.
 ```javascript
 // simpler way lol (unsure if this is possible in Circom)
 x1 === 1
@@ -74,7 +56,7 @@ xn(xn - 1) === 0
 ((x1)(x2)...(xn)) - 1 === 0
 ```
 
-4. 
+4. A bipartite graph is a graph that can be colored with two colors such that no two neighboring nodes share the same color. Devise an arithmetic circuit scheme to show you have a valid witness of a 2-coloring of a graph. Hint: the scheme in this tutorial needs to be adjusted before it will work with a 2-coloring.
 Proposed VALID bipartite graph (5 nodes):
 
 ```mermaid
@@ -123,7 +105,7 @@ D-->C
 0 === (dc - 2)
 ```
 
-5. 
+5. Create an arithmetic circuit that constrains `k` to be the maximum of `x`, `y`, or `z`. That is, `k` should be equal to `x` if `x` is the maximum value, and same for `y` and `z`.
 ```javascript
 /*
     I should check 
@@ -214,7 +196,7 @@ k === selector_x * x + selector_y * y + selector_z * z
 Note for this previous resolution: It's the first thing that came to my mind after 5 minutes of thinking how to solve it, maybe is not the best way but it's what I could do with the tools I learned in the [ZK Book](https://www.rareskills.io/post/arithmetic-circuit). Please, if you found other way to solve it, open an issue or send a pool request to add yours! 
 
 
-6. 
+6. Create an arithmetic circuit that takes signals `x₁, x₂, …, xₙ`, constrains them to be binary, and outputs 1 if at least one of the signals is 1. Hint: this is tricker than it looks. Consider combining what you learned in the first two problems and using the NOT gate.
 ```javascript
 x1(x1 - 1) === 0 
 x2(x2 - 1) === 0 
@@ -226,7 +208,7 @@ xn(xn - 1) === 0
 1 === ((x1 + x2 - x1x2) + x3 - (x1 + x2 - x1x2)x3) // ... and so on until the last xn
 ```
 
-7. 
+7. Create an arithmetic circuit to determine if a signal `v` is a power of two (1, 2, 4, 8, etc). Hint: create an arithmetic circuit that constrains another set of signals to encode the binary representation of `v`, then place additional restrictions on those signals.
 ```javascript
 v === b0 + 2b1 + 4b2 + 8b3
 
@@ -238,7 +220,9 @@ b3(b3 - 1) === 0
 1 === b0 + b1 + b2 + b3
 ```
 
-8. For this one I'm not sure about what the exercise is asking. I guess that S and k are public inputs and the prover inputs just which values from S compute k. Esentially, the prover provides the subset. But I don't know, it sounds super easy that way.
+8. Create an arithmetic circuit that models the Subset sum problem. Given a set of integers (assume they are all non-negative), determine if there is a subset that sums to a given value `k`. For example, given the set `{3, 5, 17, 21}` and `k = 22` there is a subset `{5, 17}` that sums to `22`. Of course, a subset sum problem does not necessarily have a solution.
+
+For this one I'm not sure about what the exercise is asking. I guess that S and k are public inputs and the prover inputs just which values from S compute k. Esentially, the prover provides the subset. But I don't know, it sounds super easy that way.
 ```javascript
 b0(b0 - 1) === 0
 b1(b1 - 1) === 0
@@ -258,7 +242,14 @@ b3(b3 - 1) === 0
 s0 * b0 + s1 * b1 + s2 * b2 + s3 * b3 === k
 ```
 
-9. This one is similar than the n° 8 but the exercise is more clear: the prover has to input the amount of subsets "k" and which subsets are going to be used.
+9. The covering set problem starts with a set `S={1, 2, ..., 10}` and several well-defined subsets of `S`, for example `{1, 2, 3}, {3, 5, 7, 9}, {8, 10}, {5, 6, 7, 8}, {2, 4, 6, 8}`, and asks if we can take at most `k` subsets of `S` such that their union is `S`. n the example problem above, the answer for `k = 4`, is true because we can use `{1, 2, 3}, {3, 5, 7, 9}, {8, 10}, {2, 4, 6, 8}`. Note that for each problems, the subsets we can work with are determined at the beginning. We cannot construct the subsets ourselves. If we had been given the subsets `{1, 2, 3}, {4, 5}, {7, 8, 9, 10}` then there would be no solution because the number `6` is not in the subsets.
+
+On the other hand, if we had been given `S = {1, 2, 3, 4, 5}` and the subsets `{1}, {1, 2}, {3, 4}, {1, 4, 5}` and asked can it be covered with `k = 2` subsets, then there would be no solution. However, if `k = 3` then a valid solution would be `{1, 2}, {3, 4}, {1, 4, 5}`.
+
+Our goal is to prove for a given set `S` and a defined list of subsets of `S`, if we can pick a set of subsets such that their union is `S`. Specifically, the question is if we can do it with `k` or fewer subsets. We wish to prove we know which `k` (or fewer) subsets to use by encoding the problem as an arithmetic circuit.
+
+
+This one is similar than the n° 8 but the exercise is more clear: the prover has to input the amount of subsets "k" and which subsets are going to be used.
 ```javascript
 /*
     What needs to be done:

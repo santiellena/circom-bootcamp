@@ -2,6 +2,7 @@
 
 ### Exercises:
 For all problems below, assume the finite field is `p = 71`.
+I'll be using [the Rust playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2024) to find the soultions.
 
 #### Problem 1
 
@@ -12,65 +13,6 @@ Find the elements in a finite field that are congruent to the following values:
 - -160
 - 500
 
-#### Problem 2
-
-Find the elements that are congruent to `a = 5/6`, `b = 11/12`, and `c = 21/12`
-
-Verify your answer by checking that `a + b = c` (in the finite field)
-
-#### Problem 3
-
-Find the elements that are congruent to `a = 2/3`, `b = 1/2`, and `c = 1/3`.
-
-Verify your answer by checking that `a * b = c` (in the finite field)
-
-#### Problem 4
-
-The inverse of a 2 x 2 matrix A is
-
-```math
-A^{-1}=\frac{1}{\text{det}}\begin{bmatrix}d & -b\\-c & a\end{bmatrix}
-```
-
-where A is
-
-```math
-A = \begin{bmatrix}a & b\\c & d\end{bmatrix}
-```
-
-And the determinant det is
-
-```math
-\text{det}=a \times d-b\times c
-```
-
-Compute the inverse of the following matrix in the finite field:
-
-```math
-\begin{bmatrix}1 & 1\\1 & 4\end{bmatrix}
-```
-
-Verify your answer by checking that
-
-```math
-AA^{-1}=I
-```
-
-Where I is the identity matrix.
-
-#### Problem 5
-
-What is the modular square root of 12?
-
-Verify your answer by checking that `x * x = 12 (mod 71)`
-
-Use brute force to find the answer (in Python)
-
-### Solutions:
-
-I'll be using [the Rust playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2024) to find the soultions.
-
-1. 
 ```rust
 fn main() {
     let p = 71;
@@ -88,7 +30,13 @@ fn main() {
 500 is congurent to 74
 ```
 
-2. For this exercise, I had to manually create an algorithm that computes the modular inverse of some number in a field.
+#### Problem 2
+
+Find the elements that are congruent to `a = 5/6`, `b = 11/12`, and `c = 21/12`
+
+Verify your answer by checking that `a + b = c` (in the finite field)
+
+For this exercise, I had to manually create an algorithm that computes the modular inverse of some number in a field.
 
 ```rust
 // Extended Euclidean Algorithm
@@ -142,7 +90,13 @@ fn main() {
 21/12 mod 71 -> 55
 ```
 
-3. For this exercise, I will be using the same functions from point 2.
+#### Problem 3
+
+Find the elements that are congruent to `a = 2/3`, `b = 1/2`, and `c = 1/3`.
+
+Verify your answer by checking that `a * b = c` (in the finite field)
+
+For this exercise, I will be using the same functions from point 2.
 
 In the Rust playground:
 ```rust
@@ -167,7 +121,41 @@ fn main() {
 1/3 mod 71 -> 24
 ```
 
-4. For this excercise I will use the 2 functions for modular inverses of point 2, and other functions for matrix operations:
+#### Problem 4
+
+The inverse of a 2 x 2 matrix A is
+
+```math
+A^{-1}=\frac{1}{\text{det}}\begin{bmatrix}d & -b\\-c & a\end{bmatrix}
+```
+
+where A is
+
+```math
+A = \begin{bmatrix}a & b\\c & d\end{bmatrix}
+```
+
+And the determinant det is
+
+```math
+\text{det}=a \times d-b\times c
+```
+
+Compute the inverse of the following matrix in the finite field:
+
+```math
+\begin{bmatrix}1 & 1\\1 & 4\end{bmatrix}
+```
+
+Verify your answer by checking that
+
+```math
+AA^{-1}=I
+```
+
+Where I is the identity matrix.
+
+For this excercise I will use the 2 functions for modular inverses of point 2, and other functions for matrix operations:
 
 ```rust
 fn inverse_matrix_2x2_mod_p(a: [[u64; 2]; 2], det: u64, p: u64) -> [[u64; 2]; 2] {
@@ -235,8 +223,13 @@ fn main() {
 }
 ```
 
+#### Problem 5
 
-5. 
+What is the modular square root of 12?
+
+Verify your answer by checking that `x * x = 12 (mod 71)`
+
+Use brute force to find the answer (in Python)
 
 ```rust
 fn main() {
