@@ -21,7 +21,7 @@ Solution:
 \color{yellow}{v} &= \color{green}{t} \color{white}* \color{purple}{u + 2 * c + 3}\\   
 \\
 \end{align*}
-\\
+\\\\
 \textcolor{yellow}{\begin{bmatrix}
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
