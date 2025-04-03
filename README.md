@@ -13,7 +13,8 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
    - [Rank-1-Constraints-System](#rank-1-constraints-system)
    - [Homework S3](#homework-s3)
 - [Session 4](#session-4)
-
+   - [Circom Basics](#circom-basics)
+   - [Homework S4](#homework-s4)
 
 ## Session 1
 
