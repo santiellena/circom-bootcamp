@@ -12,6 +12,8 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 3](#session-3)
    - [Rank-1-Constraints-System](#rank-1-constraints-system)
    - [Homework S3](#homework-s3)
+- [Session 4](#session-4)
+
 
 ## Session 1
 
@@ -171,8 +173,29 @@ Proposed exercises and their solutions are in the homework folder in [this](./ho
 
 In this session, it was covered how artimetic circuits are converted into R1CS. This is the last session where we review foundational Circom topics. 
 
-I already have my own personal explanation on how the conversion from algebraic circuits in [this](https://github.com/santiellena/zk-magic-square?tab=readme-ov-file#arithmetic-circuit-to-r1sc) repository, with easy examples and some good theory background. I won't repeat myself here, you can go and check this topic there.
+I already have my own personal explanation on how the conversion works from algebraic circuits in [this](https://github.com/santiellena/zk-magic-square?tab=readme-ov-file#arithmetic-circuit-to-r1sc) repository, with easy examples and some good theory background. I won't repeat myself here, you can go and check this topic there.
 
 ### Homework S3
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session3.md) file.
+
+## Session 4
+
+### Circom Basics
+
+The knowledge from previous lessons starts to converge here. Circom is a language (unsure if it can be called a programming language) that allows us to write airthmetic circuits in the form of constraints that follows the rules of R1CS constraints.
+
+Circom compiler converts our constraints into a R1CS (low-level representation), which allows us to eliminate complexity in writing our own ZK systems.
+
+Circom has a syntax that is really familiar to common programming languages and allows us to use tools, such as for loops or conditional statements, to make the constraints declaration easier. However, its behavior is restricted and the logic behind writing circuits has nothing to do with the programming logic (although they seem simmilar).
+
+After some research, I found that Circom is both a DSL (Domain-Specific-Language) and a programming language as well. The programming language feature of Circom is used to "populate" the witness (inputs) into some other thing, such as an output or an intermediate signal.
+
+I don't think that going through the Circom syntax here would be helpful. Instead, refer to the following resource:
+- [Circom Docs](https://docs.circom.io/circom-language/signals/)
+
+In order to test skills, I suggest not to go through all zero knowledge puzzles (mentioned in the homework file) and just stick to the ones listed in the homework file (there are 5).
+
+### Homework S4
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session4.md) file.
