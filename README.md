@@ -210,7 +210,7 @@ Proposed exercises and their solutions are in the homework folder in [this](./ho
 
 Highlights of the session:
 
-- Most of the times an additional array of intermediate signals is used to compute things.
+- Most of the times an additional array of intermdiate signals is used to compute things.
 - Conditional statements are only allowed if they don't modify the static structure of the R1CS that Circom compiles.
 - The `output` keyword for signals has a strange behavior:
    - In sub-components, it kind of behaves as a "return" value,
