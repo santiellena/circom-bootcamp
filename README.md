@@ -15,6 +15,9 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 4](#session-4)
    - [Circom Basics](#circom-basics)
    - [Homework S4](#homework-s4)
+- [Session 5](#session-5)
+   - [More Circom](#more-circom)
+   - [Homework S5](#homework-s5)
 
 ## Session 1
 
@@ -200,3 +203,24 @@ In order to test skills, I suggest not to go through all zero knowledge puzzles 
 ### Homework S4
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session4.md) file.
+
+## Session 5
+
+### More Circom
+
+Highlights of the session:
+
+- Most of the times an additional array of intermediate signals is used to compute things.
+- Conditional statements are only allowed if they don't modify the static structure of the R1CS that Circom compiles.
+- The `output` keyword for signals has a strange behavior:
+   - In sub-components, it kind of behaves as a "return" value,
+   - In the main component, it makes the signal "public" and is denoted as "public output",
+   - However, it's presence (or absense) never modifies the R1CS.
+
+At this point I am really comfortable with the Circom syntax and its "intricate" behavior. Writing Circom thinking that it will create a R1CS and nothing else is a change of paradigm that is hard at the beginning.
+
+In the first homework exercise you will see a problem I encountered and, why it was triggered and how I was able to solve it (recommended).
+
+### Homework S5
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session5.md) file.
