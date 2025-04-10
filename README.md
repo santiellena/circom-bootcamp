@@ -232,7 +232,11 @@ Proposed exercises and their solutions are in the homework folder in [this](./ho
 
 ### Even More Circom
 
-- 
+Conceptually this session didn't involve many topics, however, it helped a lot in the practical aspects of writing Circom circuits. 
+
+We saw how the [circomlib](https://github.com/iden3/circomlib) library can be used and some of its components. Additionally, we learned about how commonly Circom code is written and got comfortable with all the possible problems we could encounter. It is really basic but from now on, we won't be learning how Circom works and how we can use it. Instead, we will see real use cases for it. 
+
+Really interested for what is next!
 
 ### Homework S6
 
