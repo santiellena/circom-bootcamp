@@ -18,6 +18,9 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 5](#session-5)
    - [More Circom](#more-circom)
    - [Homework S5](#homework-s5)
+- [Session 6](#session-6)
+   - [Even More Circom](#even-more-circom)
+   - [Homework S6](#homework-s6)
 
 ## Session 1
 
@@ -224,3 +227,13 @@ In the first homework exercise you will see a problem I encountered and, why it 
 ### Homework S5
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session5.md) file.
+
+## Session 6
+
+### Even More Circom
+
+- 
+
+### Homework S6
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session6.md) file.
