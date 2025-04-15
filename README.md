@@ -21,6 +21,12 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 6](#session-6)
    - [Even More Circom](#even-more-circom)
    - [Homework S6](#homework-s6)
+- [Session 7](#session-7)
+   - [Compute then Constrain](#compute-then-constrain)
+   - [Alias Bug](#alias-bug)
+   - [Homework S7](#homework-s7)
+
+****
 
 ## Session 1
 
@@ -241,3 +247,169 @@ Really interested for what is next!
 ### Homework S6
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session6.md) file.
+
+## Session 7
+
+### Compute then Constrain
+
+##### • What is this pattern, why is it used?
+
+The idea behind "compute then constrain" is computing the solution of an algorithm and then constraining the invariants of the algorithm. This is specially useful because we don't need to only use addition and multiplication because of restirctions in how R1CS are built, instead, we can use Circom as a normal programming language to get results (or intermediate results) and then constrain them. This not only reduces the complexity when building circuits but also reduces the size of the R1CS, making the computation behind it less computationally expensive (the prover time and complexity is reduced). 
+
+##### • The Circom `<--` operator
+
+Unlike `<==`, the `<--` operator does not create constraints. It is an operator to indicate the precence of out-of-circuit computation, allowing us to compute things and assing a value to a signal which is function of other signals, without constraining it (this is specially important because the R1CS is not modified nor affected, so there aren't non-quadratic constraints). 
+
+##### • An example with modular square roots
+
+This example was the easiest for me to visualize the magic of this pattern. 
+
+Let's say we want a circuit to prove that there is a valid modular square of `in`, `out`:
+```javascript
+// this is pseudo code
+sqrt(n) % p === out % p;
+```
+If we want to write a circuit that constraints the calculation of `sqrt(in)` we will need many constraints and the complexity to write them with only addition and multiplication will be excesive.
+
+There is when the "compute then constrain" patters is useful. We can use Circom as a programming language to **compute** the modular square of `in`(first part of the pattern) and then **constrain** the invariants of the problem (second part of the pattern).
+Try the following code in [zkRepl](https://zkrepl.dev/):
+```circom
+pragma circom 2.1.6;
+
+include "circomlib/pointbits.circom";
+
+template Example() {
+   signal input in;
+	signal output out;
+	
+	out <-- sqrt(in); // COMPUTE (<-- doesn't create a contraint)
+	out * out === in; // CONSTRAIN INVARIANT
+   /*
+      it is nice to see that 
+      sqrt(in) === out,
+      is the same than
+      out * out === in,
+      but the latter is super easy to fit in a R1CS 
+   */
+}
+
+component main = Example();
+
+/* INPUT = {
+    "in": 4
+} */
+// OUTPUT: 2
+```
+In the previous example we used the [`sqrt`](https://github.com/iden3/circomlib/blob/35e54ea21da3e8762557234298dbb553c175ea8d/circuits/pointbits.circom#L27) function from circomlib. The most important detail is that it is a function and doesn't create constraints, it just computes. 
+
+##### • `Num2Bits` circuit from the `circomlib`
+
+This one is also a good example of the "compute then constrain" pattern (you will note the the circomlib library uses it a lot), but it also a good circuit to explain why `n` in this circuit and other circuits, such as [comparators](https://github.com/iden3/circomlib/blob/master/circuits/comparators.circom), should only be used when `n <= 253` or `n <= 252` depending on the case. Where `n` is the numbers of bits that represent the value passed in signals.
+
+Let's review the [`Num2Bits` implementation](https://github.com/iden3/circomlib/blob/35e54ea21da3e8762557234298dbb553c175ea8d/circuits/bitify.circom#L25-L39):
+```circom
+template Num2Bits(n) {
+    signal input in;
+    signal output out[n];
+    var lc1=0;
+
+    var e2=1;
+    for (var i = 0; i<n; i++) {
+        out[i] <-- (in >> i) & 1; // compute (picking the bit in position i)
+        out[i] * (out[i] -1 ) === 0; // then constrain
+        lc1 += out[i] * e2;
+        e2 = e2+e2; // incrementing the coefficient (esentially making them powers of 2 but easier)
+    }
+
+    lc1 === in; // constraning that the sum of 1 bits times its coefficient is equal to the signal in
+}
+```
+Because of the comments I think it is very easy to visualize the pattern.
+
+Now the other relevant part is... why `n` should not be grater than `253`?
+
+Altough this was not explained in the bootcamp, I did my own research and in the next section, you will find what I learned.
+
+### Alias Bug
+
+There is a type of bug in ZK circuits known as Alias. This bug occurs when trying to represent a value on the circuit with an amount of bits that could overflow `p`, the order of the field. 
+
+The main problem here is that the binary representation constraints silently fail when they overflow. It depends heavily in the logic on the circuit that is being built, but let's see an example with the [`Bits2Num`](https://github.com/iden3/circomlib/blob/35e54ea21da3e8762557234298dbb553c175ea8d/circuits/bitify.circom#L55-L67) circuit:
+```circom
+template Bits2Num(n) {
+    signal input in[n];
+    signal output out;
+    var lc1=0;
+
+    var e2 = 1;
+    for (var i = 0; i<n; i++) {
+        lc1 += in[i] * e2;
+        e2 = e2 + e2;
+    }
+
+    lc1 ==> out;
+}
+```
+
+I could pass an array of many bits, create an overflow, and `out` won't represent actually what the array of bits represents. SILENTLY!
+Let's see an example:
+```circom
+pragma circom 2.1.6;
+
+include "circomlib/bitify.circom";
+
+template Example(n) {
+    signal in[n];
+
+    for(var i = 0; i < n; i++){
+        in[i] <== 1;
+    }
+
+    component bits2Num = Bits2Num(n);
+    bits2Num.in <== in;
+    log(bits2Num.out);
+}
+
+component main = Example(254);
+
+/* INPUT = {
+    "in": []
+} */
+```
+Here we pass an array of `254` bits set to 1, but the output we get in decimal numbers doesn't represent the actual value of `(2^254) - 1`.
+- Decimal output: 7059779437489773633646340506914701874769131765994106666166191815402473914366
+- Binary output:  111110011011101100011000110100
+                  01111011001110010111111101011 
+                  001000111101011111011101001001
+                  001011111100111111010100111101
+                  000101101011111001100000101111
+                  011011110000110010001101000111
+                  101101110101111000001111000001
+                  010011011000000111111111111111
+                  1111111111110 (252 digits)
+
+Now you see that we get a different decimal number given our initial array of bits.
+
+But why and when this occurs?
+
+Remember that I previously mentioned something about the amount of bits `n` not being greater than `252 or 253`, depending on the circuit. These values have a reason, and the reason is `p`, the order of the field.
+
+Circom can represent values from `0` up to `p - 1`, obviously, because all calculations are done modulo `p`.
+
+`p`in binary is represented with `254` bits, but `p` itself is not `(2^254) - 1`. This means that all the values in the range `[p-1, (2^254) - 1]` cannot be represented in our field without overflowing.
+
+This means that all decimal values represented with `253` bits fits in our group, but not all of the represented with `254` do.
+
+Wait... but why I said that sometimes the limit is `252`?
+
+There are special cases such as in `comparators` where the strategy to compare numbers is calculating the addition of a bigger middle number with the delta between the two compared numbers. Then, just by checking the `MSB` of the addition, we can see if the delta was negative or positive infering the value of the comparison. 
+If we compare two `253` bits values, we need the middle value of the values represented with `254` bits, which we saw that could raise a serious bug.
+
+So we can compare numbers up to `252`. 
+For the specific algorith on how this comparison works, check the [first exercise of the session 1 homework](./homework/session1.md).
+
+To prevent the **alias bug**, circomlib has a circuit that works as a check: the [AliasCheck circuit](https://github.com/iden3/circomlib/blob/master/circuits/aliascheck.circom).
+
+### Homework S7
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session7.md) file.
