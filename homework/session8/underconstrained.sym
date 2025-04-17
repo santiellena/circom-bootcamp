@@ -1,0 +1,7 @@
+1,1,1,main.quotient
+2,2,1,main.mod
+3,3,1,main.num
+4,4,1,main.den
+5,-1,0,main.iz.out
+6,-1,0,main.iz.in
+7,5,0,main.iz.inv
