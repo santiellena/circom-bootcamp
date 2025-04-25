@@ -431,4 +431,49 @@ Security Researcher mode: ON. Have fun!
 
 ### Homework S8
 
-Proposed exercises and their solutions are in the homework folder in [this](./homework/session8/session8.md) file.
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session8/session8.md) folder.
+
+## Session 9
+
+### Conditional Statements in Circom and The Quin Selector
+
+In the session 5, I already introduced the intricate behavior of Circom regarding conditional statements. Luckily, today in the bootcamp we learned about it, why it happens and how to solve it(or at least mimic their behavior with signals).
+
+Essentially what creates the problem with conditional statements and signals is that the R1CS should never change. For a given circuit, it's always the same L, R and O matrices, what changes is the witness. If we have this in mind every time we write a circuit, we will never use signals to affect the behavior of a conditional statement, and the value of a signal cannot be assigned depending on a condition of other kind of values. The R1CS is generated at compile time, so the circuit’s structure (constraints) must be independent of signal values, which are only known at runtime.
+
+
+From the ZK book: "If-statements are acceptable if they are not affected by any signals, and do not affect any signals."
+
+The workaround to this problem is using the logic that we have been using with aritmetic circuits. The name of the technique is "branching", and there are two ways of seeing it. See this example:
+
+Given an array `[10, 5, 3, 77]`, I want to input an index `x`, and I want the output to have the value of the array in the index.
+
+1) We can see this as a lagrange interpolation problem where the set of `x` values of the function will be the possible values for the index and the `y` values will be the values of the array. The set of point we want the polynomial will be: `{(0, 10), (1, 5), (2, 3), (3, 77)}`. Evaluating this polynomial at the input index `x` yields the corresponding array value. 
+
+This approach is too complex to be done in a circuit, it's impractical but theorically correct. It helps to see the pattern (at least to me).
+
+2) We can use the `IsEqual` template from `comparators.circom` of the `circomlib` and make our life easier (this is the standard when writing circuits):
+```circom
+  x_eq_0 <== IsEqual()([x, 0]);
+  x_eq_1 <== IsEqual()([x, 1]);
+  x_eq_2 <== IsEqual()([x, 2]);
+  x_eq_3 <== IsEqual()([x, 3]);
+  otherwise <== IsZero()(x_eq_0 + x_eq_1 + x_eq_2 + x_eq_3); 
+
+  out <== x_eq_0 * 10 + x_eq_1 * 5 + x_eq_2 * 3 + x_eq_3 * 77;
+```
+
+The otherwise signal is 1 if `x` is not 0, 1, 2, or 3 (i.e., an invalid index), and 0 otherwise. This can be used to enforce that the input index is valid or to provide a default output.
+
+
+All this I mentioned was awesome to introduce the **Quin Selector** design pattern that says...
+
+The Quin Selector pattern is implemented in the IsEqual approach, where x_eq_0, x_eq_1, etc., act as indicators (1 for the matching index, 0 otherwise). Multiplying these by the array values and summing them selects the correct value.
+
+We multiply the desired index by 1 and the rest by zero, then sum the result.
+
+Essentially what we have been talking about!! So now you know the Quin Selector pattern haha.
+
+### Homework S9
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session9.md) file.
