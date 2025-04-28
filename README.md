@@ -27,6 +27,13 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
    - [Homework S7](#homework-s7)
 - [Session 8](#session-8)
    - [Hacking Underconstrained Circuits with Fake Proofs](#hacking-underconstrained-circuits-with-fake-proofs)
+- [Session 9](#session-9)
+   - [Conditional Statements in Circom and The Quin Selector](#conditional-statements-in-circom-and-the-quin-selector)
+   - [Homework S9](#homework-s9)
+- [Session 10](#session-10)
+   - [Stateful Computation](#stateful-computation)
+   - [Homework S10](#homework-s10)
+
 
 ****
 
@@ -477,3 +484,17 @@ Essentially what we have been talking about!! So now you know the Quin Selector 
 ### Homework S9
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session9.md) file.
+
+## Session 10
+
+### Stateful Computation
+
+We are not able to do stateful computation in Circom. We just simply cannot stop a computation in the middle of it and return a value. Circom compiles to an R1CS under the hood, and the underlying R1CS needs to have a fixed size. The logic behind why conditional statements are tricky in Circom is the same: the R1CS structure.
+
+However, as with conditional statements we have a workaround for this kind of problems. We will do all posible computations and then select one of those. As for example in the [homework](./homework/session10.md), I computed all the powers of an input `base` up to the `n`-th power, but selected the power in the input `power`, with a [Quin Selector](#conditional-statements-in-circom-and-the-quin-selector).
+
+This session was quite short but the idea was to get comfortable with the DLS and its logic for writing circuits. Forgetting the programming logic to adapt to this logic of writing circuits that compile to a R1CS is challenging but not hard, it just takes practice and time.
+
+### Homework S10
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session10.md) file.
