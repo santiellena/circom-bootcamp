@@ -498,3 +498,19 @@ This session was quite short but the idea was to get comfortable with the DLS an
 ### Homework S10
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session10.md) file.
+
+## Session 11
+
+### Swapping Two Items in an Array
+
+Swaps in Circom are tricky because in a normal programming language we can access an array at an index and then modify it as we wish. Remember that in Circom:
+1) We cannot directly index an array of signals.
+2) Signals are immutable once assigned a value.
+
+Any array manipulation in Circom requires creating a new array and copying the old values to the new one, except where the update happens.
+
+It's the same logic that we used in the previous session.
+
+### Homework S11
+
+Proposed exercises and their solutions are in the homework folder in [this](./homework/session11.md) file.
