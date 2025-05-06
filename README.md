@@ -33,6 +33,12 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 10](#session-10)
    - [Stateful Computation](#stateful-computation)
    - [Homework S10](#homework-s10)
+- [Session 11](#session-11)
+   - [Swapping Two Items in an Array](#swapping-two-items-in-an-array)
+   - [Homework S11](#homework-s11)
+- [Session 12](#session-12)
+   - [Selection Sort](#selection-sort)
+   - [Homework S12](#homework-s12)
 
 
 ****
@@ -514,3 +520,24 @@ It's the same logic that we used in the previous session.
 ### Homework S11
 
 Proposed exercises and their solutions are in the homework folder in [this](./homework/session11.md) file.
+
+## Session 12
+
+### ZeleKtion Sort
+
+Stateful computations are common but tricky in Circom due to immutable signals and fixed R1CS. We explored proving Selection Sort, which swaps each index with the minimum of the remaining sublist. 
+
+Key points:
+
+- Selection Sort: Iterate through array, swap index `i` with min of sublist `i..n-1`.
+- Circom approach: Create new arrays for each swap, track intermediate states.
+- Built on prior sessions: Used `QuinSelector` for indexing, `Swap` from Session 11, and min-finding from Session 10.
+- Proved correctness by verifying min selection and swaps for each step.
+
+This is a gentle intro to stateful ZK proofs, like hash functions, where intermediate states are key. Also it was said that understanding this is key knowledge for understanding zkVMs (I'm really interested in that specific topic).
+
+As you can see now, all previous sessions converge here and they all make sense. The structure of this bootcamp is well designed.
+
+### Homework S12
+
+Proposed exercises and solutions are in the homework folder in [this](./homework/session12.md) file.
