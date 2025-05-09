@@ -39,6 +39,9 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 12](#session-12)
    - [Selection Sort](#selection-sort)
    - [Homework S12](#homework-s12)
+- [Session 13](#session-13)
+   - [Stack Based zkVM](#stack-based-zkvm)
+   - [Homework S13](#homework-s13)
 
 
 ****
@@ -541,3 +544,24 @@ As you can see now, all previous sessions converge here and they all make sense.
 ### Homework S12
 
 Proposed exercises and solutions are in the homework folder in [this](./homework/session12.md) file.
+
+## Session 13
+
+### Stack Based zkVM
+
+We've finally reached the part of the bootcamp that had most of my interest: zkVMs!
+
+First we reviewed all the content that is basically in this chapter of the ZK Book: https://www.rareskills.io/post/zk-stack
+
+Key points of that chapter:
+   - zkVMs use tables to represent everything that involves stateful computation (at least stack based VMs, I'm unsure about register based VMs)
+   - How the zkVM works is actually easy to understand. The hard part is writing its behavior so we enforce correctly the constraints. I we were about to program  the behavior of this simple stack, with a normal programming language (Rust for example🦀) it'd be easy. But here we are using a zk DLS (Circom) which makes it trickier.
+   - With all the previous knowledge and proficiency we gain in Circom from last sessions, writing the code for the zkVM is actually easy. We just have to take the pieces and put the puzzle together.
+   - The "zk" in zkVM is not because the execution of the code is private, but because we use zk tech to build proofs of execution of code that can be verified succintly. We know that somebody executed the code and got an output without the need of doing the execution ourselves and comparing the result.
+   - As we saw in session 12, for stateful computations in arrays, we use many arrays where each one of them represent an step or modification of that array. Signals in Circom are immutable so we found this trick to mimic that behavior. For zkVMs, each "step" would be an opcode or instruction, and we will have as many arrays representing the changes in the stack as opcodes we have.
+
+   I strongly recommend checking out the homework and solving it yourself.
+
+### Homework S13
+
+Proposed exercises and solutions are in the homework folder in [this](./homework/session13.md) file.
