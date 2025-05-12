@@ -560,8 +560,50 @@ Key points of that chapter:
    - The "zk" in zkVM is not because the execution of the code is private, but because we use zk tech to build proofs of execution of code that can be verified succintly. We know that somebody executed the code and got an output without the need of doing the execution ourselves and comparing the result.
    - As we saw in session 12, for stateful computations in arrays, we use many arrays where each one of them represent an step or modification of that array. Signals in Circom are immutable so we found this trick to mimic that behavior. For zkVMs, each "step" would be an opcode or instruction, and we will have as many arrays representing the changes in the stack as opcodes we have.
 
-   I strongly recommend checking out the homework and solving it yourself.
+I strongly recommend checking out the homework and solving it yourself.
 
 ### Homework S13
 
 Proposed exercises and solutions are in the homework folder in [this](./homework/session13.md) file.
+
+## Session 14
+
+### 32-Bit Emulation
+
+Learned how to emulate 32-bit arithmetic in Circom, where signals are field elements (mod a large prime). 
+Key points:
+
+- 32-bit words (mod 2^32) are needed for hash functions and VMs, unlike field elements.
+- Range check: Use `Num2Bits(32)` to ensure signals fit in 32 bits, more efficient than `LessThan`.
+- 32-bit addition: Range check inputs, add as field elements, convert sum to 33 bits, take 32 least significant bits.
+- 32-bit multiplication: Similar, but needs 64 bits before taking 32 bits.
+
+This is useful for proving traditional computations. The end goal is to review hash functions.
+
+As for homework we have to build a 32 bit division template. It was said that that kind of circuits are usually full of bugs.
+I will be sharing here my research about that.
+
+Counterintuitively, the following constraint is not enough for the ZK division to be safe:
+```circom
+quotient <-- n \ d;
+modulus <-- n % d;
+
+// not good enough
+n === quotient * d + modulus;
+```
+
+This is because altough n (numerator) and d (denominator) are inmutable signals, quotient and modulus don't have constraints assigned. And altough Circom does compute a valid result for the quotient and reminder (modulus), nothing stops an attacker to modify the resulting proof and pass incorrect values for quotient and modulus that will satisfy the only constraint.
+
+Review [session 8](#session-8) for more clarity on the topic, especially the homework.
+
+One of the solutions for this kind of circuits is quite simple. [Here](https://github.com/succinctlabs/sp1/issues/746) there is an example of a `Div` circuit bug that was found in Succinct SP1 VM.
+
+The proposed solution is constraining that: `reminder < denominator`.
+
+But be cautious... this is a good solid solution for 32 bits division, where `d * n` is at most 64 bits, in a ~254 bits field (Circom field). If we had 128 bits computation in a 256 bits field, we'll be at risk of overflows.
+
+
+
+### Homework S14
+
+Proposed exercises and solutions are in the homework folder in [this](./homework/session14.md) file.
