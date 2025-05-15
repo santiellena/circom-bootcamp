@@ -42,7 +42,12 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 13](#session-13)
    - [Stack Based zkVM](#stack-based-zkvm)
    - [Homework S13](#homework-s13)
-
+- [Session 14](#session-14)
+   - [32-bit Emulation](#32-bit-emulation)
+   - [Homework S14](#homework-s14)
+- [Session 15](#session-15)
+   - [MD5 Hash Function](#md5-hash-function)
+   - [Homework S15](#homework-s15)
 
 ****
 
@@ -598,12 +603,31 @@ Review [session 8](#session-8) for more clarity on the topic, especially the hom
 
 One of the solutions for this kind of circuits is quite simple. [Here](https://github.com/succinctlabs/sp1/issues/746) there is an example of a `Div` circuit bug that was found in Succinct SP1 VM.
 
-The proposed solution is constraining that: `reminder < denominator`.
+The proposed solution is constraining that: `remainder < denominator`.
 
 But be cautious... this is a good solid solution for 32 bits division, where `d * n` is at most 64 bits, in a ~254 bits field (Circom field). If we had 128 bits computation in a 256 bits field, we'll be at risk of overflows.
-
-
 
 ### Homework S14
 
 Proposed exercises and solutions are in the homework folder in [this](./homework/session14.md) file.
+
+## Session 15
+
+### MD5 Hash Function
+
+Implemented MD5 hash in Circom to compute and prove correct execution. 
+Though not secure, MD5 mechanics mirror secure hashes. 
+
+Key points:
+
+- Bitwise AND/OR/XOR/NOT, LeftRotate, 32-bit addition (mod 2^32), `Func` for register logic, input padding; learned this in the last session.
+- Padding: Add 0x80, zeros, and length to 512-bit block.
+- Output: 128-bit hash in big-endian.
+- Built on Session 14’s 32-bit emulation (range checks, bitwise ops).
+- The whole MD5 template takes +52k R1CS constraints; ZK-friendly hashes are more efficient (way more) and that's why they are so relevant.
+
+Previous sessions built the knowledge for this. In the neext (and last) session we will learn about ZK-friendly hash functions, which don't build on 32-bit words but on the native prime field of the DLS (Circom in this case).
+
+### Homework S15
+
+Proposed exercises and solutions are in the homework folder in [this](./homework/session15.md) file.
