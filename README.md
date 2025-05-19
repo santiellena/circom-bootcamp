@@ -631,3 +631,25 @@ Previous sessions built the knowledge for this. In the neext (and last) session 
 ### Homework S15
 
 Proposed exercises and solutions are in the homework folder in [this](./homework/session15.md) file.
+
+## Session 16
+
+### ZK-Friendly Hash Functions
+
+Explored ZK-friendly hashes (MiMC, Poseidon), which use native field elements for fewer constraints than SHA-256(or MD5 which reviewed last session). Key points:
+
+- Unlike 32-bit hashes, use field addition/multiplication, avoiding bit decomposition.
+- MiMC: Iterates input with exponentiation (e=7 for Circom), 91 rounds, 364 constraints for one input.
+- Poseidon: Adds matrix multiplication, fewer rounds, 213 constraints for one input, scales better for multiple inputs (240 for two inputs).
+- Properties: Preimage resistance, collision resistance, pseudorandomness.
+- Builds on Session 15’s MD5 (52k+ constraints) to show efficiency gains.
+
+This was the final session of the bootcamp!
+
+## Conclusions
+
+After two months of lectures on topics I was unfamiliar with half a year ago, I’ve gained deep knowledge in building ZK circuits, from stateful constraints to optimizing R1CS. This foundational bootcamp covered ZK primitives and Circom’s DSL thoroughly, equipping me for practical applications.
+
+I now feel confident to advance in ZKPs, focusing on security aspects that fascinate me, like circuit vulnerabilities (Session 14’s division bugs). My next steps are learning Plonky3 and Halo2, widely used in industry, and competing in audits to test my skills.
+
+I 100% recommend this bootcamp to anyone passionate about ZK with a solid theoretical foundation in finite fields and R1CS. It’s a game-changer for aspiring ZK developers!
