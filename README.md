@@ -48,6 +48,9 @@ This repository contains my homework and notes on the Circom Bootcamp by RareSki
 - [Session 15](#session-15)
    - [MD5 Hash Function](#md5-hash-function)
    - [Homework S15](#homework-s15)
+- [Session 16](#session-16)
+   - [ZK-Friendly Hash Functions](#zk-friendly-hash-functions)
+- [Conclusions](#conclusions)
 
 ****
 
